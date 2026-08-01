@@ -1,0 +1,12 @@
+*.ipynb
+
+# Python
+__pycache__/ 
+# Virtual environments 
+# IDEs 
+.vscode/ 
+
+# Chroma database
+chroma_db/*
+# Documents
+documents/* 
