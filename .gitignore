@@ -9,4 +9,6 @@ __pycache__/
 # Chroma database
 chroma_db/*
 # Documents
-Dokumente/* 
+Dokumente/*
+!Dokumente/.gitkeep
+
