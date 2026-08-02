@@ -7,3 +7,8 @@ langchain-ollama
 langchain-text-splitters
 chromadb
 pypdf
+
+docx2txt
+openpyxl
+unstructured
+msoffcrypto

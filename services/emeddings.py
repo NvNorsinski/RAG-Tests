@@ -4,8 +4,8 @@ import config
 
 
 class EmbeddingService:
-    """
-        Loads the model
+    """Loads the model
+    
     """    
     def __init__(self):
         self.embeddings = OllamaEmbeddings(
@@ -13,4 +13,9 @@ class EmbeddingService:
         )
 
     def get(self):
+        """Get the embeddings for the model
+
+        Returns:
+            embddings: Ollama embeddings
+        """        
         return self.embeddings

@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import streamlit as st
 
 from services.rag import RagService
@@ -52,9 +54,21 @@ if question:
         st.markdown("### Quellen")
 
         for source in sources:
-            st.write(
-                f"{source['file']} - Seite {source['page']}"
-            )
+
+            file_name = Path(source["file"]).name
+
+            text = f"📄 {file_name}"
+
+            if "page" in source:
+                text += (f" — Page "
+                    f"{source['page']}")
+
+            if "sheet" in source:
+                text += (
+                    f" — Sheet "
+                    f"{source['sheet']}"
+                )
+            st.write(text)
 
     st.session_state.messages.append(
         {

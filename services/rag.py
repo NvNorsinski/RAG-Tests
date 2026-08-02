@@ -10,7 +10,7 @@ class RagService:
 
         self.history = []
 
-        self.retriever = VectorStoreService().retriever()
+        self.retriever = VectorStoreService(recreate=True).retriever()
 
         self.llm = ChatOllama(
             model=config.LLM_MODEL,
@@ -37,34 +37,67 @@ class RagService:
         )
 
     def format_docs(self, docs):
-        """Formats the Dokument for Output.
+        """Formats the Document for output.
 
         Args:
             docs (list[Document]): List of returns 
         Returns:
             str: formated String
         """        
-        text = ""
+            
+        formatted_docs = []
 
-        for i, doc in enumerate(docs):
+        for i, doc in enumerate(docs, start=1):
 
-            page = doc.metadata["page"] + 1
+            source = doc.metadata.get(
+                "source",
+                "Unbekannte Datei"
+            )
 
-            source = doc.metadata["source"]
+            file_type = doc.metadata.get(
+                "file_type",
+                "")
 
-            text += f"""
-            [{i+1}]
+            page = doc.metadata.get("page")
 
-            Datei: {source}
+            sheet_name = doc.metadata.get("page_name")
 
-            Seite: {page}
+            location = ""
 
-            {doc.page_content}
+            # PDF: Seitennummer anzeigen
+            if page is not None:
+                location = f"Seite {page + 1}"
 
-            --------------------
-            """
+            # Excel: Tabellenblatt anzeigen
+            elif sheet_name:
+                location = (
+                    f"Tabellenblatt "
+                    f"{sheet_name}"
+                )
 
-        return text
+            # Word oder andere Dateien
+            else:
+                location = "Keine Seiten- oder Tabellenblattinformation"
+
+            formatted_docs.append(
+                f"""
+                    [Quelle {i}]
+
+                    Datei:
+                    {source}
+
+                    Dateityp:
+                    {file_type}
+
+                    Fundstelle:
+                    {location}
+
+                    Inhalt:
+                    {doc.page_content}
+                    """
+            )
+
+        return "\n\n".join(formatted_docs)
     
 
     def format_history(self):
@@ -125,5 +158,49 @@ class RagService:
         return answer, sources
 
 
+    def get_sources(self, documents):
+        """Get sources files
 
- 
+        Args:
+            documents (list[Documents]): List of the Documents
+
+        Returns:
+            list[Unknown]: Return of Sources as list
+        """        
+        unique_sources = set()
+
+        for document in documents:
+            source = document.metadata.get("source", "Unknown")
+
+            file_type = document.metadata.get("file_type","Unknown")
+            
+            page = document.metadata.get("page")
+            
+            sheet_name = document.metadata.get("page_name")
+            
+            unique_sources.add(
+                (
+                    source,
+                    file_type,
+                    page,
+                    sheet_name
+                )
+            )
+
+        sources = []
+
+        for (source, file_type, page, sheet_name) in sorted(unique_sources):
+            item = {
+                "file": source,
+                "type": file_type
+            }
+
+            if page is not None:
+                item["page"] = page + 1
+
+            if sheet_name:
+                item["sheet"] = sheet_name
+        
+            sources.append(item)
+
+        return sources

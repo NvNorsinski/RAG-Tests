@@ -4,4 +4,4 @@ Path to file has to be set in config.py
 
 start by running the streamlit app from commandline with 
 
-`streamlit run app`
+`streamlit run app.py`
