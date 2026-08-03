@@ -14,3 +14,11 @@ CHUNK_SIZE = 1000
 CHUNK_OVERLAP = 200
 
 SUPPORTED_EXTENSIONS = {".pdf", ".docx", ".xlsx", ".xls", ".txt", ".md"}
+
+
+VECTOR_WEIGHT = 0.6 
+BM25_WEIGHT = 0.4
+RETRIEVER_K = 6
+RETRIEVER_FETCH_K = 30
+MMR_LAMBDA = 0.5
+

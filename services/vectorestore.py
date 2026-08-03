@@ -1,80 +1,167 @@
 import shutil
-from pathlib import Path
 
 from langchain_chroma import Chroma
-from langchain_core.vectorstores import VectorStoreRetriever
+from langchain_classic.retrievers import EnsembleRetriever
+from langchain_community.retrievers import BM25Retriever
 
 import config
-from services.emeddings import EmbeddingService
+from services.embeddings import EmbeddingService
 from utils.document_loader import DocumentLoaderService
 
 
 class VectorStoreService:
-    """Stores the document in Vector database."""
 
-    def __init__(self, recreate=False):
-        self.embedding = EmbeddingService().get()
-        self.persist_dir = Path(config.CHROMA_DIR)
+    def __init__(self):
 
-        if recreate and self.persist_dir.exists():
-            shutil.rmtree(self.persist_dir, ignore_errors=True)
+        self.embeddings = EmbeddingService().get_embeddings()
+        self.vectorstore = None
+        self.chunks = None
 
-        if self.persist_dir.exists() and any(self.persist_dir.iterdir()):
-            try:
-                self.db = Chroma(
-                    persist_directory=str(self.persist_dir),
-                    embedding_function=self.embedding
-                )
-            except Exception:
-                shutil.rmtree(self.persist_dir, ignore_errors=True)
-                self.db = self._create_database()
-        else:
-            self.db = self._create_database()
 
-    def _create_database(self):
-        """Creates and returns a Chroma database populated with text chunks.
-
-        This method loads documents, splits them into chunks, and creates a Chroma
-        vector database using the specified embedding model. The database is persisted
-        to the directory specified by `self.persist_dir`.
+  
+    def get_chunks(self):
+        """Returns Document chunks
 
         Returns:
-            chromadb.api.client.Client: The Chroma database client instance.
-        """   
-        loader = DocumentLoaderService()
-        chunks = loader.create_chunks()
+           list[Document] : List of Chunks of the Documents
+        """        
+        if self.chunks is None:
+            loader = DocumentLoaderService()
+            self.chunks = loader.create_chunks()
+            
+        return self.chunks
 
-        self.persist_dir.mkdir(parents=True, exist_ok=True)
 
-        return Chroma.from_documents(
-            documents=chunks,
-            embedding=self.embedding,
-            persist_directory=str(self.persist_dir)
+
+    def database_exists(self) -> bool:
+        """return database path if Database already exists
+
+        Returns:
+            bool: if Path of Chroma DB databases exists
+        """        
+        return (
+            config.CHROMA_DIR.exists()
+            and any(
+                config.CHROMA_DIR.iterdir()
+            )
         )
 
-    def create_database(self):
-        """creates the database for Documents
-
-        Returns:
-            chromadb.api.client.Client: The Database
-        """
-        self.vectorstore = self._create_database()
-        return self.vectorstore
-
-    def retriever(self) -> VectorStoreRetriever:
-        """Defines the retriever
-
-        Returns:
-            VectorStoreRetriever: Configured MMR retriever instance.
-        """
-        return self.db.as_retriever(
-            search_type="mmr",  # searches for more diverse documents, not just the most similar ones
-            search_kwargs={
-                "k": 4,  # amount of documents to return
-                "fetch_k": 20,  # number of documents fetched to the search process
-                "lambda_mult": 0.5  # diversity
-            }
-        )
 
    
-  
+
+    def load_database(self) -> Chroma:
+        """Load the Databass
+
+        Returns:
+            Chroma database: Chroma Database
+        """        
+        self.vectorstore = Chroma(persist_directory=str(config.CHROMA_DIR),
+            embedding_function=self.embeddings
+        )
+
+        return self.vectorstore
+
+
+
+
+    def create_database(self) -> Chroma:
+        """Create databse if not exists
+
+        Returns:
+            Chroma database: Chroma Database
+        """        
+
+        chunks = self.get_chunks()
+
+        config.CHROMA_DIR.mkdir(parents=True, exist_ok=True)
+
+        self.vectorstore = (
+            Chroma.from_documents(
+                documents=chunks,
+                embedding=self.embeddings,
+                persist_directory=str(
+                    config.CHROMA_DIR
+                )
+            )
+        )
+
+        return self.vectorstore
+
+
+
+    def get_vectorstore(self) -> Chroma:
+        """ Returns:
+        Chroma: The vector store instance, either existing, loaded, or newly 
+
+        Returns:
+            Chroma: The vector store instance, either existing, loaded, or newly 
+        """        
+        if self.vectorstore is not None:
+            return self.vectorstore
+
+        if self.database_exists():
+            return self.load_database()
+        return self.create_database()
+
+
+
+
+    def get_retriever(self) -> EnsembleRetriever:
+
+        chunks = self.get_chunks()
+
+        # Vector Search + MMR
+
+        vector_retriever = (
+            self.get_vectorstore().as_retriever(
+                search_type="mmr",
+                search_kwargs={
+                    "k": config.RETRIEVER_K,
+                    "fetch_k": (
+                        config.RETRIEVER_FETCH_K
+                    ),
+                    "lambda_mult": (
+                        config.MMR_LAMBDA
+                    )
+                }
+            )
+        )
+
+        # BM25
+
+        bm25_retriever = BM25Retriever.from_documents(chunks)
+        
+
+        bm25_retriever.k = config.RETRIEVER_K
+
+        # Hybrid Search
+
+        hybrid_retriever = (
+            EnsembleRetriever(
+                retrievers=[
+                    vector_retriever,
+                    bm25_retriever
+                ],
+                weights=[
+                    config.VECTOR_WEIGHT,
+                    config.BM25_WEIGHT
+                ]
+            )
+        )
+
+        return hybrid_retriever
+
+
+
+
+    def rebuild_database(self) -> Chroma:
+
+        if config.CHROMA_DIR.exists():
+            shutil.rmtree(config.CHROMA_DIR)
+
+        self.vectorstore = None
+
+        self.chunks = None
+
+        return self.create_database()
+

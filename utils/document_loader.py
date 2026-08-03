@@ -15,7 +15,7 @@ import config
 
 class DocumentLoaderService:
 
-    def load_file(self, file_path):
+    def load_file(self, file_path) -> list[Document]:
         """Load Files
 
         Args:
@@ -142,7 +142,12 @@ class DocumentLoaderService:
         return all_documents
 
 
-    def create_chunks(self):
+    def create_chunks(self) -> list[Document]:
+        """Create the Chunks of the documents
+
+        Returns:
+            list[Documents]: list of the chunks
+        """        
         documents = (
             self.load_all_documents()
         )

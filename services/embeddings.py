@@ -12,7 +12,7 @@ class EmbeddingService:
             model=config.EMBEDDING_MODEL
         )
 
-    def get(self):
+    def get_embeddings(self) -> OllamaEmbeddings:
         """Get the embeddings for the model
 
         Returns:

@@ -10,7 +10,7 @@ class RagService:
 
         self.history = []
 
-        self.retriever = VectorStoreService(recreate=True).retriever()
+        self.retriever = VectorStoreService().get_retriever()
 
         self.llm = ChatOllama(
             model=config.LLM_MODEL,
@@ -100,7 +100,7 @@ class RagService:
         return "\n\n".join(formatted_docs)
     
 
-    def format_history(self):
+    def format_history(self) -> str:
         """Returns the history formated with the roles: AI, User
 
         Returns:
