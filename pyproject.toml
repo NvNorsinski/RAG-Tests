@@ -31,7 +31,7 @@ dependencies = [
     "docx2txt",
     "openpyxl",
     "unstructured",
-    "msoffcrypto",
+    "msoffcrypto-tool",
     "rank-bm25",
 ]
 

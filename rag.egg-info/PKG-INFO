@@ -1,0 +1,39 @@
+Metadata-Version: 2.4
+Name: rag
+Version: 0.1.0
+Summary: Retrieval-augmented generation project
+Author: NvN
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: streamlit
+Requires-Dist: langchain
+Requires-Dist: langchain-classic
+Requires-Dist: langchain-core
+Requires-Dist: langchain-community
+Requires-Dist: langchain-chroma
+Requires-Dist: langchain-ollama
+Requires-Dist: langchain-text-splitters
+Requires-Dist: chromadb
+Requires-Dist: pypdf
+Requires-Dist: docx2txt
+Requires-Dist: openpyxl
+Requires-Dist: unstructured
+Requires-Dist: msoffcrypto-tool
+Requires-Dist: rank-bm25
+
+# Testing for RAG Pipeline
+This tool can answer questions on documents stored in "Dokumente".
+
+It uses BM25 Keyword Search and Chroma Vector Search with MMR.
+
+
+Change configs in config.py
+
+Start by running the streamlit app from commandline with 
+
+
+`streamlit run app.py`
