@@ -2,7 +2,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_ollama import ChatOllama
 
 import config
-from services.vectorestore import VectorStoreService
+from rag.services.vectorestore import VectorStoreService
 
 
 class RagService:

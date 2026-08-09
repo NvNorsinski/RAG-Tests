@@ -8,9 +8,11 @@ rag.egg-info/SOURCES.txt
 rag.egg-info/dependency_links.txt
 rag.egg-info/requires.txt
 rag.egg-info/top_level.txt
+rag/services/__init__.py
+rag/services/embeddings.py
+rag/services/rag.py
+rag/services/vectore_store_service.py
+rag/services/vectorestore.py
+rag/utils/__init__.py
+rag/utils/document_loader.py
 services/__init__.py
-services/embeddings.py
-services/rag.py
-services/vectore_store_service.py
-services/vectorestore.py
-utils/document_loader.py

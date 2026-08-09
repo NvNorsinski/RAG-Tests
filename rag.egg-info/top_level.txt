@@ -2,4 +2,3 @@ app
 config
 rag
 services
-utils

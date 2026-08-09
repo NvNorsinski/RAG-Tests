@@ -2,7 +2,7 @@ from pathlib import Path
 
 import streamlit as st
 
-from services.rag import RagService
+from rag.services.rag import RagService
 
 st.set_page_config(
     page_title="Lokaler RAG Assistent",

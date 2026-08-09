@@ -5,8 +5,8 @@ from langchain_classic.retrievers import EnsembleRetriever
 from langchain_community.retrievers import BM25Retriever
 
 import config
-from services.embeddings import EmbeddingService
-from utils.document_loader import DocumentLoaderService
+from rag.services.embeddings import EmbeddingService
+from rag.utils.document_loader import DocumentLoaderService
 
 
 class VectorStoreService:
