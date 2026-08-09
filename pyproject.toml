@@ -40,5 +40,5 @@ py-modules = ["app", "config"]
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["services*", "utils*"]
+include = ["rag*", "services*", "utils*"]
 exclude = ["__pycache__"]

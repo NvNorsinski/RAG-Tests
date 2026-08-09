@@ -2,6 +2,7 @@ Readme.md
 app.py
 config.py
 pyproject.toml
+rag/__init__.py
 rag.egg-info/PKG-INFO
 rag.egg-info/SOURCES.txt
 rag.egg-info/dependency_links.txt
