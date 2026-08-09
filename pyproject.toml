@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rag"
+version = "0.1.0"
+description = "Retrieval-augmented generation project"
+readme = "Readme.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Operating System :: OS Independent",
+]
+authors = [
+    { name = "Your Name" },
+]
+dependencies = [
+    "streamlit",
+    "langchain",
+    "langchain-classic",
+    "langchain-core",
+    "langchain-community",
+    "langchain-chroma",
+    "langchain-ollama",
+    "langchain-text-splitters",
+    "chromadb",
+    "pypdf",
+    "docx2txt",
+    "openpyxl",
+    "unstructured",
+    "msoffcrypto",
+    "rank-bm25",
+]
+
+[tool.setuptools]
+py-modules = ["app", "config"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["services*", "utils*"]
+exclude = ["__pycache__"]
