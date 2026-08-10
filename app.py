@@ -57,7 +57,7 @@ if question:
 
             file_name = Path(source["file"]).name
 
-            text = f"📄 {file_name}"
+            text = f" {file_name}"
 
             if "page" in source:
                 text += (f" — Page "
