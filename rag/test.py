@@ -1,5 +1,3 @@
-"""DeepEval smoke tests for the local RAG project."""
-
 import json
 import os
 import re
@@ -13,11 +11,11 @@ from deepeval.metrics import (
 )
 from deepeval.models import DeepEvalBaseLLM
 from deepeval.test_case import LLMTestCase
+from langchain_ollama import ChatOllama
 
 import config
 from rag.services.rag import RagService
 
-# DeepEval can be slow with local Ollama; keep a generous timeout.
 os.environ.setdefault("DEEPEVAL_DISABLE_TIMEOUTS", "1")
 os.environ.setdefault("DEEPEVAL_PER_ATTEMPT_TIMEOUT_SECONDS_OVERRIDE", "600")
 os.environ.setdefault("DEEPEVAL_PER_TASK_TIMEOUT_SECONDS_OVERRIDE", "600")
@@ -52,7 +50,7 @@ class OllamaModel(DeepEvalBaseLLM):
             text = text.split("\n", 1)[1].strip()
 
         # Some local judge models return only a partial object like {"statement": ...}
-        # without the required "verdict" field. DeepEval expects a strict schema.
+        # without the required "verdict" field. A strict schema is expected.
         try:
             return json.loads(text)
         except json.JSONDecodeError:
@@ -100,8 +98,6 @@ class OllamaModel(DeepEvalBaseLLM):
         return payload
 
     def generate(self, prompt: str) -> str:
-        from langchain_ollama import ChatOllama
-
         llm = ChatOllama(model=self.model_name, temperature=0, streaming=False)
         return llm.invoke(prompt).content
 

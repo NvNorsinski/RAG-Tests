@@ -14,12 +14,14 @@ Start by running the streamlit app from commandline with
 
 
 
-Run Evaluations based on Deep Eval Package
+# Run Evaluations based on Deep Eval Package
+LLM-as-a-judge evaluation is implemented.
 
 Run specific test
 python -m pytest rag/test.py -k test_rag_faithfulness -vv -s -rA
 
-available are
+Available are:
+
 test_rag_faithfulness
 
 test_rag_relevancy

@@ -58,7 +58,7 @@ def run_benchmark():
         prompt_eval_count = data.get("prompt_eval_count", 0)
         prompt_eval_duration = data.get("prompt_eval_duration", 0)
 
-        # Ollama liefert Zeiten in Nanosekunden - umrechnen in Sekunden
+        # Ollama liefert Zeiten in Nanosekunden -> umrechnen in Sekunden
         eval_seconds = eval_duration / 1e9
         prompt_eval_seconds = prompt_eval_duration / 1e9
 
