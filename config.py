@@ -8,7 +8,11 @@ CHROMA_DIR = BASE_DIR / "chroma_db"
 
 EMBEDDING_MODEL = "nomic-embed-text"
 
-LLM_MODEL = "qwen3.6:latest"
+#LLM_MODEL = "qwen3.6:latest"
+LLM_MODEL = "gemma4:e2b"
+
+# Judge model for DeepEval metrics (separate from the main LLM)
+DEEPEVAL_JUDGE_MODEL = "gemma4:e2b"
 
 CHUNK_SIZE = 1000
 CHUNK_OVERLAP = 200

@@ -155,7 +155,7 @@ class RagService:
                 }
             )
 
-        return answer, sources
+        return answer, sources, context
 
 
     def get_sources(self, documents):

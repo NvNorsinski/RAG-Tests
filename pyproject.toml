@@ -35,6 +35,11 @@ dependencies = [
     "rank-bm25",
 ]
 
+[tool.pytest.ini_options]
+markers = [
+    "slow: marks tests that use local Ollama evaluation and may take several minutes",
+]
+
 [tool.setuptools]
 py-modules = ["app", "config"]
 
