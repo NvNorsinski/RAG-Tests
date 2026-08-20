@@ -6,6 +6,8 @@ __pycache__/
 # Virtual environments 
 # IDEs 
 .vscode/ 
+.deepeval
+.pytest_cache
 
 # Chroma database
 chroma_db/*
