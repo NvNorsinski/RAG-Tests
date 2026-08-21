@@ -1,13 +1,11 @@
 # Testing for RAG Pipeline
-This tool can answer questions on documents stored in "Dokumente".
+This tool can answer questions on documents stored in "Dokumente". To do this an LLM is used.
 
-It uses BM25 Keyword Search and Chroma Vector Search with MMR.
+BM25 Keyword Search and Chroma Vector Search with MMR is used to find exact keywords in a Document.
 
 
 Change configs in config.py
-Possible Changes are the embedding and the LLM Model.
-All the models need to be downloaded in Ollama.
-
+Possible Changes are the embedding and the LLM Model and the weight of the BM25 Keyword Search.
 
 
 Start by running the streamlit app from commandline with 
@@ -16,10 +14,8 @@ Start by running the streamlit app from commandline with
 `streamlit run app.py`
 
 
-
-
 # Run Evaluations based on Deep Eval Package
-LLM-as-a-judge evaluation is implemented.
+LLM-as-a-judge evaluation is implemented. This is implemented as a Unittest to have an indicator for the correctness of the models output.
 
 The judge model can be set in DEEPEVAL_JUDGE_MODEL in configs
 
@@ -77,5 +73,5 @@ Prompt Tokens:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;81
 
 
 
--------------------------------------------
+## Requirements
 All models need to be downloaded with Ollama first.
