@@ -24,17 +24,17 @@ Run specific test
 
 Available are:
 
-test_rag_faithfulness
+- test_rag_faithfulness
 
-test_rag_relevancy
+- test_rag_relevancy
 
-test_rag_contextual_relevancy
+- test_rag_contextual_relevancy
 
-test_rag_hallucination
+- test_rag_hallucination
 
+<br>
 
-
-Run all tests
+Run all tests with:
 
 ``python -m pytest rag/test.py -k TestRAGWithDeepEval -vv -s -rA``
 
