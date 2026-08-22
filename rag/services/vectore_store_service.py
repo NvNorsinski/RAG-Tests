@@ -7,9 +7,7 @@ class VectorStoreService:
 
     def __init__(self):
         self.embeddings = EmbeddingService().get()
-
         self.vectorstore = None
-
         self.chunks = None
 
 

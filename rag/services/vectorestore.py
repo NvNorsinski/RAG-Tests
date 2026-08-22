@@ -12,7 +12,6 @@ from rag.utils.document_loader import DocumentLoaderService
 class VectorStoreService:
 
     def __init__(self):
-
         self.embeddings = EmbeddingService().get_embeddings()
         self.vectorstore = None
         self.chunks = None
@@ -40,10 +39,7 @@ class VectorStoreService:
             bool: if Path of Chroma DB databases exists
         """        
         return (
-            config.CHROMA_DIR.exists()
-            and any(
-                config.CHROMA_DIR.iterdir()
-            )
+            config.CHROMA_DIR.exists() and any(config.CHROMA_DIR.iterdir())
         )
 
 
@@ -79,9 +75,7 @@ class VectorStoreService:
             Chroma.from_documents(
                 documents=chunks,
                 embedding=self.embeddings,
-                persist_directory=str(
-                    config.CHROMA_DIR
-                )
+                persist_directory=str(config.CHROMA_DIR)
             )
         )
 
@@ -107,35 +101,26 @@ class VectorStoreService:
 
 
     def get_retriever(self) -> EnsembleRetriever:
-
         chunks = self.get_chunks()
 
         # Vector Search + MMR
-
         vector_retriever = (
             self.get_vectorstore().as_retriever(
                 search_type="mmr",
                 search_kwargs={
                     "k": config.RETRIEVER_K,
-                    "fetch_k": (
-                        config.RETRIEVER_FETCH_K
-                    ),
-                    "lambda_mult": (
-                        config.MMR_LAMBDA
-                    )
+                    "fetch_k": (config.RETRIEVER_FETCH_K),
+                    "lambda_mult": (config.MMR_LAMBDA)
                 }
             )
         )
 
         # BM25
-
         bm25_retriever = BM25Retriever.from_documents(chunks)
-        
 
         bm25_retriever.k = config.RETRIEVER_K
 
         # Hybrid Search
-
         hybrid_retriever = (
             EnsembleRetriever(
                 retrievers=[
@@ -155,13 +140,9 @@ class VectorStoreService:
 
 
     def rebuild_database(self) -> Chroma:
-
         if config.CHROMA_DIR.exists():
             shutil.rmtree(config.CHROMA_DIR)
-
         self.vectorstore = None
-
         self.chunks = None
-
         return self.create_database()
 

@@ -48,7 +48,6 @@ class RagService:
         formatted_docs = []
 
         for i, doc in enumerate(docs, start=1):
-
             source = doc.metadata.get(
                 "source",
                 "Unbekannte Datei"
@@ -138,13 +137,9 @@ class RagService:
         response = self.llm.invoke(messages)
         answer = response.content
 
-        self.history.append(
-            ("User", question)
-        )
+        self.history.append(("User", question))
 
-        self.history.append(
-            ("AI", answer)
-        )
+        self.history.append(("AI", answer))
 
         sources = []
         for doc in docs:

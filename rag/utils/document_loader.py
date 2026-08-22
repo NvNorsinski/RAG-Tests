@@ -90,9 +90,7 @@ class DocumentLoaderService:
                 rows.append(row_text)
 
             if rows:
-                sheets.append(
-                    f"Sheet: {sheet.title}\n" + "\n".join(rows)
-                )
+                sheets.append(f"Sheet: {sheet.title}\n" + "\n".join(rows))
 
         if not sheets:
             raise ValueError(f"No readable content found in Excel file: {file_path}")
@@ -148,9 +146,7 @@ class DocumentLoaderService:
         Returns:
             list[Documents]: list of the chunks
         """        
-        documents = (
-            self.load_all_documents()
-        )
+        documents = self.load_all_documents()
 
         splitter = (
             RecursiveCharacterTextSplitter(
