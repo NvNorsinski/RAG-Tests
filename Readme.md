@@ -1,8 +1,8 @@
 # Testing for RAG Pipeline
-This tool can answer questions on documents stored in "Dokumente". To do this an LLM is used.
+This tool can answer questions and uses Documents stored in "Dokumente". To do this an LLM is used.
 
 BM25 Keyword Search and Chroma Vector Search with MMR is used to find exact keywords in a Document.
-
+Supported document types are pdf, xlsx, xls, docx, md and txt. 
 
 Change configs in config.py
 Possible Changes are the embedding and the LLM Model and the weight of the BM25 Keyword Search.
