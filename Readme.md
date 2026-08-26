@@ -1,11 +1,12 @@
 # Testing for RAG Pipeline
-This tool can answer questions and uses Documents stored in "Dokumente". To do this an LLM is used.
+This tool can answer questions. As sources it uses the documents in file "Dokumente". To do this an LLM is used.
+When answering a question on the documents also the number of the page and the document where this information was found is printed out.
 
-BM25 Keyword Search and Chroma Vector Search with MMR is used to find exact keywords in a Document.
+BM25 Keyword Search and Chroma Vector Search with MMR is used to find exact keywords in a document.
 Supported document types are pdf, xlsx, xls, docx, md and txt. 
 
 Change configs in config.py
-Possible Changes are the embedding and the LLM Model and the weight of the BM25 Keyword Search.
+Possible changes for example are the embedding, the LLM Model and the weight of the BM25 Keyword Search.
 
 
 Start by running the streamlit app from commandline with 
